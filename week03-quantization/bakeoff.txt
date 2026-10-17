@@ -1,0 +1,21 @@
+ref-bakeoff.csv — the week 3 reference bake-off, measured once for this course.
+
+Four quants of the same 0.5B model (qwen2.5:0.5b-instruct-*), pulled from the registry.
+
+Machine: Apple M4 Pro, 48 GB RAM, Ollama 0.31.2, temperature 0 via the API.
+Speed: eval rate of a fixed 200-token generation; one cold run discarded, three warm runs kept.
+
+Probes were frozen before any model ran, and every score is against the fp16 output as reference:
+
+  p1_language   : write one Thai sentence explaining what PM2.5 is
+                  (fp16 reference: a fluent Thai sentence, odd word choice)
+
+  p2_arithmetic : What is 17 times 23? Reply with the number only.   (fp16 reference: 401)
+
+  p3_recall     : What is the capital city of Australia? One word.   (fp16 reference: Sydney)
+
+  p4_instruction: List the first five prime numbers, comma-separated. (fp16 reference: 2, 3, 5, 7, and 11)
+
+Note: two reference outputs are themselves wrong (17x23 = 391; the capital is Canberra).
+Scoring is against the fp16 OUTPUT, so the table measures degradation caused by quantization, 
+not absolute truth. The 'notes' column quotes what the failing tiers actually did.

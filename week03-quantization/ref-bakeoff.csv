@@ -1,0 +1,18 @@
+# ref-bakeoff.csv — the week 3 reference bake-off, measured once for this course.
+# Four quants of the same 0.5B model (qwen2.5:0.5b-instruct-*), pulled from the registry.
+# Machine: Apple M4 Pro, 48 GB RAM, Ollama 0.31.2, temperature 0 via the API.
+# Speed: eval rate of a fixed 200-token generation; one cold run discarded, three warm runs kept.
+# Probes were frozen before any model ran, and every score is against the fp16 output as reference:
+#   p1_language   : write one Thai sentence explaining what PM2.5 is
+#                   (fp16 reference: a fluent Thai sentence, odd word choice)
+#   p2_arithmetic : What is 17 times 23? Reply with the number only.   (fp16 reference: 401)
+#   p3_recall     : What is the capital city of Australia? One word.   (fp16 reference: Sydney)
+#   p4_instruction: List the first five prime numbers, comma-separated. (fp16 reference: 2, 3, 5, 7, and 11)
+# Note: two reference outputs are themselves wrong (17x23 = 391; the capital is Canberra).
+# Scoring is against the fp16 OUTPUT, so the table measures degradation caused by quantization,
+# not absolute truth. The 'notes' column quotes what the failing tiers actually did.
+tier,disk_mb,tok_s_run1,tok_s_run2,tok_s_run3,tok_s_median,p1_language,p2_arithmetic,p3_recall,p4_instruction,notes
+fp16,994,184.6,185.8,185.8,185.8,ref,ref,ref,ref,the reference output for every probe
+q8_0,531,274.7,275.0,275.1,275.0,pass,pass,pass,pass,identical to fp16 on all four probes
+q4_K_M,397,286.4,285.4,277.3,285.4,partial,pass,pass,pass,Thai script but semantic nonsense (PM2.5 as 'an extract of human laughter')
+q2_K,338,296.7,302.0,303.8,302.0,fail,fail,pass,pass,arithmetic drifts 401 to 409; mixes Chinese into the Thai and rambles to the token cap

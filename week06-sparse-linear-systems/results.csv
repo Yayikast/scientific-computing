@@ -1,0 +1,6 @@
+metric,value,unit
+density,0.004,fraction non-zero
+dense-GB,0.384,GB
+CSR-MB,2.33,MB
+matvec speedup,63.9,x (dense time / sparse time)
+spsolve speedup,41.7,x (dense solve time / spsolve time)
