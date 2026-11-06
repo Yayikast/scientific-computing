@@ -30,9 +30,21 @@ Built a PM2.5 early-warning classifier for Bangkok schools and evaluated it with
   catching 44 of 47 dangerous test days instead of 33.
 - Computed ROC-AUC two independent ways (trapezoid rule and pair counting), both 0.935.
 
+### Week 13: Eigenvalues, SVD and PCA (`week13-eigenvalues-svd-pca/`)
+Decided how much data a fleet of 40 air-quality sensors (one year of hourly readings) needs to send.
+- Read the SVD scree plot: 5 layers stand above a flat noise floor, so the fleet sends 44,005 numbers
+  instead of 350,400 (12.6%) with an error of 1.92 ug/m3 on healthy stations, the size of the
+  sensor noise (2 ug/m3). Keeping whole hours on the same budget was 8.6 times worse.
+- Used PCA on one station's centred days x hours table: the first two components correlate with
+  the season (-0.98) and with weekends (+0.88).
+- Found two broken sensors from the numbers: a dead one (spread 0.30, correlation 0.003 with the
+  fleet) and a noisy one (residual 8.10 against a healthy median of 2.06).
+- Ranked a reference network with my own damped power iteration and showed what a sink does
+  without damping.
+
 ## Skills
-Python, NumPy, SciPy (sparse matrices, linear solvers), scikit-learn (Pipeline, TimeSeriesSplit,
-ROC-AUC), reproducible notebooks, and writing results for non-technical readers.
+Python, NumPy, SciPy (sparse matrices, linear solvers, SVD), scikit-learn (Pipeline, TimeSeriesSplit,
+ROC-AUC), PCA and power iteration, reproducible notebooks, and writing results for non-technical readers.
 
 ## Run it
     python -m venv .venv
